@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>CRUD App</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-white bg-dark">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+              </ul>
+              <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+            </div>
+          </nav>
+    </header>
+    <main>
+        <div class="container mt-5 col-6">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Chapter name" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <button id='add_btn' class="btn btn-outline-success" type="button" id="button-addon2">Add</button>
+            
+          </div>
+          <ul id='parentList' class="list-group">
+            <li id='parentList' class="list-group-item d-flex justify-content-between" >
+              <h2 class="flex-grow-1">Chapter 1</h2> 
+            <button class="btn btn-outline-warning mx-3" onclick="editChapter(this)">Edit</button>
+            <button class="btn btn-outline-danger" onclick="removeChapter(this)">Remove</button>
+          </li>
+          </ul>
+        </div>
+      
+    </main>
+    
+    <script>
+        let btn = document.getElementById('add_btn')
+        btn.addEventListener('click',addChapter)
+        let parentList= document.getElementById('parentList')
+
+        function addChapter(e){
+            if (parentList.children[0].className == "emptyMsg") {
+              parentList.children[0].remove()
+            }
+            let currentbtn = e.currentTarget;
+            let currentInput = currentbtn.previousElementSibling
+            let currentChapterName = currentInput.value
+
+            let newList= document.createElement('li');
+            //newList.classList.add('list-group-item')
+            newList.className = "list-group-item d-flex justify-content-between"
+            newList.innerHTML=`<h2 class="flex-grow-1">${currentChapterName}</h2> 
+            <button class="btn btn-outline-warning mx-3" onclick="editChapter(this)">Edit</button>
+            <button class="btn btn-outline-danger" onclick="removeChapter(this)">Remove</button>` 
+            
+
+            
+            parentList.appendChild(newList)
+        }
+
+        function removeChapter(currelement){
+          currelement.parentElement.remove()
+          if(parentList.children.length <= 0){
+            let newMsg = document.createElement("h2")
+            newMsg.classList.add("emptyMsg")
+            newMsg.textContent = "Nothing is here, Please add a chapter!"
+            parentList.appendChild(newMsg)
+          }
+
+        }
+        function editChapter(currentelement){
+          if (currentelement.textContent == "Done"){
+            currentelement.textContent = "Edit"
+            let currentChapterName = currentelement.previousElementSibling.value
+            let currentHeading = document.createElement('h3');
+            currentHeading.className = "flex-grow-1"
+            currentHeading.textContent = currentChapterName
+            currentelement.parentElement.replaceChild(currentHeading,currentelement.previousElementSibling) 
+          }
+          else {
+            currentelement.textContent = "Done"
+            let currentChapterName = currentelement.previousElementSibling.textContent
+            let currentInput = document.createElement('input');
+            currentInput.type="text"
+            currentInput.placeholder="Chapter name"
+            currentInput.className="form-control"
+            currentInput.value = currentChapterName
+            currentelement.parentElement.replaceChild(currentInput,currentelement.previousElementSibling)
+
+          }
+            
+        }
+    </script>
+    
+</body>
+</html>
